@@ -103,9 +103,9 @@ model.eval()
 
 ## **Output File Description**
 
-| File Name | Rows | Columns | Description |
-|-----------|------|----------|-------------|
-| **Group_17_CNN_FullModel.ph** | — | — | Serialized PyTorch model for Razorback logo classification |
+| File Name | Description |
+|-----------|-------------|
+| **Group_17_CNN_FullModel.ph** | Serialized PyTorch model for Razorback logo classification |
 
 ---
 
