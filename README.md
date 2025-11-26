@@ -1,74 +1,33 @@
-Overview
-This project extends the Group 17 Machine Learning pipeline to build and evaluate a Convolutional Neural Network (CNN) using PyTorch, designed to classify images as containing the official University of Arkansas Razorback logo or not.
+# **Group 17: Project 3 – Razorback Logo Classification (CNN)**
 
-The model supports automated detection of potential unlicensed logo usage on Etsy, helping the university identify vendors for further investigation.
-The notebook automates preprocessing, model building, training, tuning, and evaluation using a reproducible pipeline built on torchvision and PyTorch.
-Environment Setup
-Install required dependencies:
+**Updated:** 2025-11-26  
+
+## **Overview**
+
+This project extends the Group 17 Machine Learning pipeline to implement a **Convolutional Neural Network (CNN)** model on a **custom Razorback image dataset**, predicting whether an image contains the **official University of Arkansas Razorback logo** or not.
+
+The notebook automates dataset preprocessing, model tuning, and evaluation using `torch` and `torchvision` utilities such as **ImageFolder**, **transforms**, and **custom CNN architectures**, ensuring consistent transformations and reproducible results across the training, validation, and testing phases.
+
+---
+
+## **Environment Setup**
+
+Before running, ensure we have a Python environment with the following dependencies installed:
+
+```bash
 pip install torch torchvision numpy matplotlib pillow
-GPU support (CUDA) is optional but recommended.
-Project Outline
-1. Dataset Development
-Collected a custom image dataset from Etsy and the official University of Arkansas branding page.
-Each image labeled as:
-razorback → contains the official logo
-non_razorback → does not contain the official logo
-Minimum dataset size: 50+ images (as required).
-Dataset split:
-Split	Percentage
-Train	70%
-Valid	20%
-Test	10%
-Final preprocessing transformation:
-transforms.Resize((500, 500))
-transforms.ToTensor()
-Implemented a safe image loader to automatically skip corrupted .png files and prevent crashing.
-2. CNN Model Training & Tuning
-Loaded dataset using torchvision.datasets.ImageFolder.
-Designed a custom CNN architecture with:
-Convolutional layers
-ReLU activation
-MaxPooling
-Fully connected layers
-Dropout to reduce overfitting
-Trained using:
-Loss: CrossEntropyLoss
-Optimizer: Adam
-Batch size: tuned experimentally
-Epochs: adjusted based on validation loss
-Experimented with several architectures by modifying:
-• Number of filters
-• Kernel sizes
-• Depth of convolution stack
-• Dropout rate
-Selected the best model based on validation accuracy and learning curves.
-Saved final model:
-torch.save(model, "Group_17_CNN_FullModel.ph")
-3. Evaluation Metrics
-Evaluated the model using:
-Training vs Validation accuracy
-Loss curves over epochs
-Per-class performance
-Visual inspection of predictions
-Misclassification analysis
-The CNN successfully learned to classify Razorback vs non-Razorback images with strong performance despite the small dataset size.
-4. Final Output and Deliverables
-This project produces:
-File	Description
-Group_17_CNN_FullModel.ph	Final saved PyTorch CNN model
-Jupyter Notebook	Full training + evaluation workflow
-Presentation Slides	Summary of dataset creation, model design, and results
-GitHub Repository	Clean, well-commented code and documentation
-Output File Description
-File Name	Type	Purpose
-Group_17_CNN_FullModel.ph	Serialized PyTorch Model	Used to classify new images as logo or non-logo
-To reload the model:
-import torch
-model = torch.load("Group_17_CNN_FullModel.ph", map_location="cpu")
-model.eval()
-Reproduction Steps
-Clone/download the repository.
-Prepare dataset using this structure:
+```
+
+---
+
+## **Project Outline**
+
+### **1. Dataset Development and Preprocessing**
+
+- Collected a custom dataset of Razorback and non-Razorback images from Etsy and the official Razorback branding website.  
+- Organized data into the required directory structure:
+
+```
 data/
    train/
       razorback/
@@ -79,26 +38,111 @@ data/
    test/
       razorback/
       non_razorback/
-Open the notebook:
-project3_group17_cnn.ipynb
-Run all cells sequentially.
-The notebook will automatically:
-Load and preprocess images
-Train multiple CNN architectures
-Select the best model
-Save Group_17_CNN_FullModel.ph
-Reflection
-This project demonstrates:
-The importance of a clean, high-quality dataset for vision tasks
-The power of convolutional layers in extracting spatial logo features
-Advantages of dropout, Adam optimizer, and validation curves for stable training
-Benefits of safe loaders to handle corrupted input files
-Practical use of PyTorch for scalable and reproducible CNN experiments
-Future directions:
-Add data augmentation to improve generalization
-Expand dataset size significantly
-Apply pretrained models (e.g., ResNet-18) for transfer learning
-Develop a production-ready inference script or web API
-Group Members
-Amir Hamza Akash
-Brynn van Guilder
+```
+
+- Used a safe image loader to bypass any corrupted `.png` files that cause `UnidentifiedImageError`.  
+- Applied preprocessing transformations:
+  - `transforms.Resize((500, 500))`
+  - `transforms.ToTensor()`
+
+---
+
+### **2. Model Training and Tuning**
+
+- Loaded the dataset using `ImageFolder` with consistent preprocessing.  
+- Designed a custom CNN architecture containing:
+  - Convolutional layers  
+  - ReLU activations  
+  - MaxPooling layers  
+  - Fully connected layers  
+  - Dropout for regularization  
+
+- Trained the model using:
+  - **Loss function:** `CrossEntropyLoss`
+  - **Optimizer:** Adam
+
+- Tuned model behavior by experimenting with:
+  - Number of convolution filters  
+  - Kernel sizes  
+  - Hidden layer dimensions  
+  - Dropout rates  
+
+- Compared multiple candidate architectures and selected the **best performing model** using validation accuracy and stability of loss curves.
+
+---
+
+### **3. Evaluation Metrics**
+
+- Computed:
+  - Training accuracy  
+  - Validation accuracy  
+  - Loss curves across epochs  
+
+- Compared predicted vs. actual labels on validation images.  
+- Performed error analysis based on misclassified samples.
+
+---
+
+### **4. Final Model Saving**
+
+The final selected model was saved using the naming format required by the assignment:
+
+```
+Group_17_CNN_FullModel.ph
+```
+
+To reload the model:
+
+```python
+import torch
+model = torch.load("Group_17_CNN_FullModel.ph", map_location="cpu")
+model.eval()
+```
+
+---
+
+## **Output File Description**
+
+| File Name | Rows | Columns | Description |
+|-----------|------|----------|-------------|
+| **Group_17_CNN_FullModel.ph** | — | — | Serialized PyTorch model for Razorback logo classification |
+
+---
+
+## **Reproduction Steps**
+
+1. Place the dataset into the directory structure shown above.  
+2. Open the notebook:
+
+```
+Group17_Razorback_CNN_Project.ipynb
+```
+
+3. Run all cells sequentially.  
+4. The notebook will automatically:
+   - Load and preprocess the dataset  
+   - Train multiple CNN variants  
+   - Evaluate accuracy and loss metrics  
+   - Save the final model as:  
+     ```
+     Group_17_CNN_FullModel.ph
+     ```
+
+---
+
+## **Reflection**
+
+This project highlights:
+- The importance of consistent image preprocessing.  
+- How CNN layers capture spatial features critical for Razorback logo identification.  
+- The effects of convolution depth, filter size, and dropout on model generalization.  
+- The usefulness of validation curves in preventing overfitting.  
+- The value of a safe loader for handling corrupted images during ingestion.
+
+Future improvements include:
+- Expanding the dataset size to improve model robustness.  
+- Adding data augmentation (rotations, color jitter, flipping).  
+- Using transfer learning approaches such as ResNet or MobileNet.  
+- Building a more streamlined inference pipeline for vendor-screening tasks.
+
+---
